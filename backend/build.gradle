@@ -1,0 +1,37 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+       // classpath "net.ltgt.gradle:gradle-apt-plugin:0.21"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'net.ltgt.apt'    //azert kellett, hogy lassa a lombok altal letrehozott getter/setter-ket. 
+                                //Maskepp 'canot find symbol'-t kaptam a getter/setter fuggvenyekre
+
+group = 'debut.zsn'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile('org.springframework.boot:spring-boot-starter-web')
+    //compile 'org.projectlombok:lombok'
+    //apt 'org.projectlombok:lombok'      //Maskepp 'canot find symbol'-t kaptam a getter/setter fuggvenyekre
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.24'
+    compile group: 'org.springframework.security', name: 'spring-security-config'
+    compile group:'org.springframework.security', name:'spring-security-web'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+}
