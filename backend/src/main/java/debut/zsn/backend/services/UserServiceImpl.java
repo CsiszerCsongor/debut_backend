@@ -1,7 +1,9 @@
 package debut.zsn.backend.services;
 
 import debut.zsn.backend.dto.request.SignUpDTO;
+import debut.zsn.backend.dto.response.ContToClient;
 import debut.zsn.backend.dto.response.ResponseMessage;
+import debut.zsn.backend.dto.response.UserToAdmin;
 import debut.zsn.backend.model.*;
 import debut.zsn.backend.model.Currency;
 import debut.zsn.backend.repository.*;
@@ -69,16 +71,6 @@ public class UserServiceImpl implements UserService {
         while(userRepository.existsByUsername(username)){
             username = item.getFirstName().substring(0,1) + item.getLastName().substring(0,1) + (new Random().nextInt(899999) + 100000);
         }
-
-        /*Street street = new Street();
-        street.setName(item.getStreet());
-        City city = cityRepository.findCityById(item.getCity());
-        street.setCity(city);
-        Long id = city.getCountry().getId();
-        Country country = countryService.getCountryById(id).get();
-        city.setCountry(country);
-        street.setCity(city);
-        street = streetService.save(street);*/
 
         User user = new User(item.getFirstName(),item.getLastName(),item.getStreet(),item.getTelephone(),
                 item.getCnp(), item.getSerie(), item.getCnpNr(), item.getHouseNumber(),
@@ -169,9 +161,45 @@ public class UserServiceImpl implements UserService {
     public Cont[] getUserConts(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if(userOptional.isPresent()){
-            contRepository.findAllByUser(userOptional.get());
+            contRepository.findAllByUserAndIsDeletedFalse(userOptional.get());
         }
         return null;
 
+    }
+
+    @Override
+    public UserToAdmin getUserByCnp(String cnp) {
+        UserToAdmin userToAdmin = new UserToAdmin();
+        Optional<User> tmpUser = userRepository.findByCnp(cnp);
+
+        if(!tmpUser.isPresent()){
+            return null;
+        }
+        User user = tmpUser.get();
+
+        userToAdmin.setFirstName(user.getFirstName());
+        userToAdmin.setLastName(user.getLastName());
+        userToAdmin.setStreet(user.getStreet());
+        userToAdmin.setTelephone(user.getTelephone());
+        userToAdmin.setCnp(user.getCnp());
+        userToAdmin.setSerie(user.getSerie());
+        userToAdmin.setCnpNr(user.getCnpNr());
+        userToAdmin.setHouseNumber(user.getHouseNumber());
+        userToAdmin.setApartman(user.getApartman());
+        userToAdmin.setUsername(user.getUsername());
+        userToAdmin.setEmail(user.getEmail());
+
+        Cont[] conts = contRepository.findAllByUserAndIsDeletedFalse(user);
+        ContToClient[] contsToClient = new ContToClient[conts.length];
+
+        if(conts.length != 0){
+            for(int i = 0; i < conts.length; ++i){
+                contsToClient[i] = new ContToClient(conts[i],conts[i].getCurrency());
+            }
+        }
+
+        userToAdmin.setConts(contsToClient);
+
+        return userToAdmin;
     }
 }

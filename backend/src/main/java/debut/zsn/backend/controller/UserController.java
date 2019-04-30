@@ -1,6 +1,7 @@
 package debut.zsn.backend.controller;
 
 import debut.zsn.backend.dto.response.MainPageDataDTO;
+import debut.zsn.backend.dto.response.UserToAdmin;
 import debut.zsn.backend.model.Cont;
 import debut.zsn.backend.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,13 @@ public class UserController {
     public MainPageDataDTO getMainPageDatas(@RequestBody String username){
         Cont[] conts = userService.getUserConts(username);
         return new MainPageDataDTO(username, conts);
+    }
+
+    @PostMapping("/getUserByCNP")
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserToAdmin getUserByCNP(@RequestBody String cnp){
+        System.out.println("CNP : " + cnp);
+        return userService.getUserByCnp(cnp);
     }
 }
 

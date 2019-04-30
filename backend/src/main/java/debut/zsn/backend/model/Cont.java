@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="conts")
 public class Cont extends BaseEntity{
+    private String name;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="user_id", nullable = false)
     private User user;
@@ -21,6 +22,14 @@ public class Cont extends BaseEntity{
         this.sum = sum;
         this.currency = currency;
         this.maxValue = maxValue;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     public User getUser() {

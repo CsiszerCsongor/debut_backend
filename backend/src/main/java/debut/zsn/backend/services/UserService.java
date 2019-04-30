@@ -1,6 +1,7 @@
 package debut.zsn.backend.services;
 
 import debut.zsn.backend.dto.request.SignUpDTO;
+import debut.zsn.backend.dto.response.UserToAdmin;
 import debut.zsn.backend.model.Cont;
 import debut.zsn.backend.model.User;
 import org.springframework.http.ResponseEntity;
@@ -32,4 +33,6 @@ public interface UserService {
     boolean checkCNP(String cnp);
 
     Cont[] getUserConts(String username);
+
+    UserToAdmin getUserByCnp(String cnp);
 }
