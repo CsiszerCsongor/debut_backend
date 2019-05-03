@@ -1,6 +1,7 @@
 package debut.zsn.backend.services;
 
 import debut.zsn.backend.dto.request.CreateContDTO;
+import debut.zsn.backend.dto.request.DeleteContDTO;
 import debut.zsn.backend.dto.response.ContToClient;
 import debut.zsn.backend.dto.response.ResponseMessage;
 import debut.zsn.backend.dto.response.ResponseMessageCont;
@@ -32,6 +33,22 @@ public class ContServiceImpl implements ContService {
     @Override
     public boolean save(Cont cont) {
         return false;
+    }
+
+    @Override
+    public String save(DeleteContDTO deleteContDTO) {
+        Optional<User> userOptional = userRepository.findByUsername(deleteContDTO.getUsername());
+        if(userOptional.isPresent()){
+            Optional<Cont> contOptional = contRepository.findByUserAndName(userOptional.get(), deleteContDTO.getName());
+            if(contOptional.isPresent()){
+                Cont cont = contOptional.get();
+                cont.setDeleted(true);
+                contRepository.save(cont);
+                return "Success";
+            }
+            return "Failed";
+        }
+        return "Failed";
     }
 
     @Override

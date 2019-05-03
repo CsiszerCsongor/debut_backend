@@ -1,6 +1,7 @@
 package debut.zsn.backend.services;
 
 import debut.zsn.backend.dto.request.SignUpDTO;
+import debut.zsn.backend.dto.request.UpdateDataDTO;
 import debut.zsn.backend.dto.response.ContToClient;
 import debut.zsn.backend.dto.response.ResponseMessage;
 import debut.zsn.backend.dto.response.UserToAdmin;
@@ -72,7 +73,13 @@ public class UserServiceImpl implements UserService {
             username = item.getFirstName().substring(0,1) + item.getLastName().substring(0,1) + (new Random().nextInt(899999) + 100000);
         }
 
-        User user = new User(item.getFirstName(),item.getLastName(),item.getStreet(),item.getTelephone(),
+        City city = cityRepository.findCityById(item.getCity());
+        Street street = new Street();
+        street.setCity(city);
+        street.setName(item.getStreet());
+        street = streetService.save(street);
+
+        User user = new User(item.getFirstName(),item.getLastName(),street,item.getTelephone(),
                 item.getCnp(), item.getSerie(), item.getCnpNr(), item.getHouseNumber(),
                 item.getApartman(), username, item.getEmail(),
                 encoder.encode(item.getPassword()));
@@ -179,7 +186,8 @@ public class UserServiceImpl implements UserService {
 
         userToAdmin.setFirstName(user.getFirstName());
         userToAdmin.setLastName(user.getLastName());
-        userToAdmin.setStreet(user.getStreet());
+
+        userToAdmin.setStreet(user.getStreet().getName());
         userToAdmin.setTelephone(user.getTelephone());
         userToAdmin.setCnp(user.getCnp());
         userToAdmin.setSerie(user.getSerie());
@@ -201,5 +209,33 @@ public class UserServiceImpl implements UserService {
         userToAdmin.setConts(contsToClient);
 
         return userToAdmin;
+    }
+
+    @Override
+    public String updateUserFirstName(UpdateDataDTO updateData) {
+        Optional<User> userOptional = userRepository.findByCnp(updateData.getUserCnp());
+
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setFirstName(updateData.getDataString());
+            User tmp = userRepository.save(user);
+            if(tmp.getFirstName().equals(updateData.getDataString())){
+                return "Success";
+            }
+
+            return "Failed";
+        }
+
+        return "Failed";
+    }
+
+    @Override
+    public String getOwnCNP(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if(userOptional.isPresent()){
+            return userOptional.get().getCnp();
+        }
+
+        return "Failed";
     }
 }

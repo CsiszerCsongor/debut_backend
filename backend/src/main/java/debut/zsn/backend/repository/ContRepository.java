@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface ContRepository extends JpaRepository<Cont, Long> {
     Cont[] findAllByUserAndIsDeletedFalse(User user);
     Optional<Cont> findByUserAndCurrencyAndIsDeletedFalse(User user, Currency currency);
+    Optional<Cont> findByUserAndName(User user, String name);
 }

@@ -1,6 +1,7 @@
 package debut.zsn.backend.services;
 
 import debut.zsn.backend.dto.request.SignUpDTO;
+import debut.zsn.backend.dto.request.UpdateDataDTO;
 import debut.zsn.backend.dto.response.UserToAdmin;
 import debut.zsn.backend.model.Cont;
 import debut.zsn.backend.model.User;
@@ -35,4 +36,8 @@ public interface UserService {
     Cont[] getUserConts(String username);
 
     UserToAdmin getUserByCnp(String cnp);
+
+    String updateUserFirstName(UpdateDataDTO updateData);
+
+    String getOwnCNP(String username);
 }

@@ -1,6 +1,7 @@
 package debut.zsn.backend.controller;
 
 import debut.zsn.backend.dto.request.CreateContDTO;
+import debut.zsn.backend.dto.request.DeleteContDTO;
 import debut.zsn.backend.dto.response.ResponseMessageCont;
 import debut.zsn.backend.model.Cont;
 import debut.zsn.backend.services.ContServiceImpl;
@@ -25,5 +26,11 @@ public class ContController {
         ResponseEntity responseEntity = contService.save(createContDTO);
 
         return responseEntity;
+    }
+
+    @PostMapping("/deleteCont")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteCont(@RequestBody DeleteContDTO deleteContDTO){
+        return contService.save(deleteContDTO);
     }
 }

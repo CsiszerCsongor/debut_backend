@@ -1,5 +1,6 @@
 package debut.zsn.backend.controller;
 
+import debut.zsn.backend.dto.request.UpdateDataDTO;
 import debut.zsn.backend.dto.response.MainPageDataDTO;
 import debut.zsn.backend.dto.response.UserToAdmin;
 import debut.zsn.backend.model.Cont;
@@ -32,7 +33,7 @@ public class UserController {
         return userService.checkCNP(cnp);
     }
 
-    @PostMapping("/getMainPageData")
+    @PostMapping("/getUserOwnConts")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public MainPageDataDTO getMainPageDatas(@RequestBody String username){
         Cont[] conts = userService.getUserConts(username);
@@ -44,6 +45,18 @@ public class UserController {
     public UserToAdmin getUserByCNP(@RequestBody String cnp){
         System.out.println("CNP : " + cnp);
         return userService.getUserByCnp(cnp);
+    }
+
+    @PostMapping("/update/firstname")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String updateFirstName(@RequestBody UpdateDataDTO updateDataDTO){
+        return userService.updateUserFirstName(updateDataDTO);
+    }
+
+    @PostMapping("/getOwnCNP")
+    @PreAuthorize("hasRole('USER')")
+    public String getOwnCNP(@RequestBody String username){
+        return userService.getOwnCNP(username);
     }
 }
 

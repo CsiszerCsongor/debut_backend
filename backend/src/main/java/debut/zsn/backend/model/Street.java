@@ -1,5 +1,7 @@
 package debut.zsn.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,6 +10,7 @@ public class Street extends BaseEntity{
     private String name;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="city_id", nullable = false)
+    @JsonIgnore
     private City city;
 
     public Street(){}

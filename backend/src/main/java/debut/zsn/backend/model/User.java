@@ -27,10 +27,10 @@ public class User extends BaseEntity{
     @Size(min=3, max = 50)
     private String lastName;
 
-   /* @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="street_id", nullable = false)
-    private Street street;*/
-   private String street;
+    private Street street;
+   //private String street;
 
     @NotBlank
     private String telephone;
@@ -65,7 +65,7 @@ public class User extends BaseEntity{
 
     public User() {}
 
-    public User(String firstName, String lastName, String street, String telephone, String cnp, String serie,
+    public User(String firstName, String lastName, Street street, String telephone, String cnp, String serie,
                 int cnpNr, int houseNumber, int apartman, String username, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -97,11 +97,11 @@ public class User extends BaseEntity{
         this.lastName = lastName;
     }
 
-    public String getStreet() {
+    public Street getStreet() {
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(Street street) {
         this.street = street;
     }
 
