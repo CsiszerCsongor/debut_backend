@@ -54,7 +54,7 @@ public class mysqlInitializer implements CommandLineRunner {
 
             return currencyService.save(currencies);
         }
-        return true;
+        return false;
     }
 
     private boolean saveRoles(){
