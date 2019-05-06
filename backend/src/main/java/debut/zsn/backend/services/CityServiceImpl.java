@@ -14,6 +14,28 @@ public class CityServiceImpl implements CityService{
     private CityRepository cityRepository;
 
     @Override
+    public City save(City city) {
+        return cityRepository.save(city);
+    }
+
+    @Override
+    public boolean save(List<City> cities) {
+        for(int i = 0; i < cities.size(); ++i){
+            City tmp = cityRepository.save(cities.get(i));
+            if(tmp == null){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean existCity(String cityName) {
+        return cityRepository.existsByName(cityName);
+    }
+
+    @Override
     public List<City> getAllUndeletedCity(Country country) {
         return cityRepository.findByIsDeletedFalseAndCountry(country);
     }

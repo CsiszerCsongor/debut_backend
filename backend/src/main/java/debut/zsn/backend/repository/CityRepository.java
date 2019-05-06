@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface CityRepository extends JpaRepository<City, Long> {
+    boolean existsByName(String cityName);
     List<City> findByIsDeletedFalseAndCountry(Country country);
     City findCityById(Long id);
 }

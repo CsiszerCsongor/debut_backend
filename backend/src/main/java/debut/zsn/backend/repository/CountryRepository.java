@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
+    boolean existsByName(String name);
     List<Country> findByIsDeletedFalse();
     Optional<Country> findById(Long id);
 }

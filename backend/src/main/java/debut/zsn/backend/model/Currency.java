@@ -12,6 +12,7 @@ public class Currency extends BaseEntity {
 
     public Currency(String name) {
         this.name = name;
+        this.isDeleted = false;
     }
 
     public String getName() {

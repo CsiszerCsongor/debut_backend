@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
+    boolean existsByName(String name);
     List<Currency> findAllByIsDeletedFalse();
     Optional<Currency> findById(Long id);
 }

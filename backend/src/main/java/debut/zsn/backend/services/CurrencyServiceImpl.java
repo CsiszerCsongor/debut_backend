@@ -15,6 +15,30 @@ public class CurrencyServiceImpl implements CurrencyService {
     private CurrencyRepository currencyRepository;
 
     @Override
+    public boolean existCurrency(String name) {
+        return currencyRepository.existsByName(name);
+    }
+
+    @Override
+    public boolean save(Currency currency) {
+        Currency tmp = currencyRepository.save(currency);
+        if(tmp != null)
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean save(List<Currency> currencies) {
+        for(int i = 0; i < currencies.size(); ++i){
+            Currency tmp = currencyRepository.save(currencies.get(i));
+            if(tmp == null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public List<CurrencyToClientDTO> getAllUndeletedCurrency() {
         List<Currency> currencies = currencyRepository.findAllByIsDeletedFalse();
         return new CurrencyToClientDTO().currencyListToCurrencyToClientDTO(currencyRepository.findAll());
