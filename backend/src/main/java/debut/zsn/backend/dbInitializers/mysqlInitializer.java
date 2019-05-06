@@ -30,20 +30,17 @@ public class mysqlInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if(!saveCurrencies()){
-            throw new Exception("Can't save currencies into database!");
+            System.out.println("Can't save currencies into database! Maybe there are initial datas!");
         }
         if(!saveRoles()){
-            throw new Exception("Can't save roles into database!");
+            System.out.println("Can't save roles into database! Maybe there are initial datas!");
         }
-
         if(!saveCountries()){
-            throw new Exception("Can't save countries into database!");
+            System.out.println("Can't save countries into database! Maybe there are initial datas!");
         }
-
         if(!saveCities()){
-            throw new Exception("Can't save cities into database");
+            System.out.println("Can't save cities into database! Maybe there are initial datas!");
         }
-
     }
 
     private boolean saveCurrencies(){
@@ -68,7 +65,7 @@ public class mysqlInitializer implements CommandLineRunner {
 
             return roleService.save(roles);
         }
-        return true;
+        return false;
     }
 
     private boolean saveCountries(){
@@ -119,6 +116,6 @@ public class mysqlInitializer implements CommandLineRunner {
 
             return cityService.save(cities);
         }
-        return true;
+        return false;
     }
 }
